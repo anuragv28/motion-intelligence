@@ -183,3 +183,44 @@ font-size:18px;
 }
 
 }
+.log-panel{
+margin-top:20px;
+padding:14px;
+border-radius:14px;
+background:rgba(15,23,42,0.8);
+border:1px solid rgba(148,163,184,0.2);
+}
+
+.log-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:14px;
+font-weight:600;
+margin-bottom:10px;
+color:#bfdbfe;
+}
+
+.small-btn{
+width:auto;
+padding:6px 10px;
+font-size:12px;
+border-radius:8px;
+background:#334155;
+}
+
+.event-logs{
+font-size:12px;
+line-height:1.5;
+opacity:0.85;
+max-height:150px;
+overflow-y:auto;
+text-align:left;
+}
+
+.log-item{
+padding:8px;
+border-radius:10px;
+background:rgba(255,255,255,0.04);
+margin-bottom:8px;
+}

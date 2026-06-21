@@ -153,17 +153,11 @@ if (avg > profile.low) activity = "Moderate Motion";
 if (avg > profile.medium) activity = "High Motion State";
 if (max > profile.high) activity = "Impulse Motion Event";
 
-    /* Professional display state */
-    let state = "Static State";
+let state = activity;
 
-    if (activity.includes("Walking")) state = "Moderate Motion";
-    if (activity.includes("Running")) state = "High Motion State";
-    if (activity.includes("Shake")) state = "Impulse Motion Event";
+const variation = max - avg;
 
-    const variation = max - avg;
-
-    let stability = "Stable";
-
+let stability = "Stable";
     if (variation > 2) stability = "Unstable";
     if (variation > 4) stability = "Highly Unstable";
 

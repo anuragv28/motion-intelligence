@@ -1,5 +1,7 @@
 const eventLogsEl = document.getElementById("eventLogs");
 const clearLogsBtn = document.getElementById("clearLogsBtn");
+const exportJsonBtn = document.getElementById("exportJsonBtn");
+const exportCsvBtn = document.getElementById("exportCsvBtn");
 const modeSelect = document.getElementById("modeSelect");
 const startBtn = document.getElementById("startBtn");
 const safeBtn = document.getElementById("safeBtn");
@@ -119,6 +121,63 @@ function renderLogs() {
   }).join("");
 }
 
+function downloadFile(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+function exportJSON() {
+  const logs = getLogs();
+
+  if (logs.length === 0) {
+    alert("No logs to export.");
+    return;
+  }
+
+  downloadFile(
+    "motioncore_logs.json",
+    JSON.stringify(logs, null, 2),
+    "application/json"
+  );
+}
+
+function exportCSV() {
+  const logs = getLogs();
+
+  if (logs.length === 0) {
+    alert("No logs to export.");
+    return;
+  }
+
+  const headers = "mode,state,avg,max,stability,samples,time\n";
+
+  const rows = logs.map((log) => {
+    return [
+      log.mode,
+      log.state,
+      log.avg,
+      log.max,
+      log.stability,
+      log.samples,
+      log.time
+    ].join(",");
+  }).join("\n");
+
+  downloadFile(
+    "motioncore_logs.csv",
+    headers + rows,
+    "text/csv"
+  );
+}
+
+
 startBtn.addEventListener("click", () => {
   resetUI();
 
@@ -140,5 +199,8 @@ clearLogsBtn.addEventListener("click", () => {
   localStorage.removeItem("motioncore_logs");
   renderLogs();
 });
+
+exportJsonBtn.addEventListener("click", exportJSON);
+exportCsvBtn.addEventListener("click", exportCSV);
 
 renderLogs();

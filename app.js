@@ -1,3 +1,5 @@
+const eventLogsEl = document.getElementById("eventLogs");
+const clearLogsBtn = document.getElementById("clearLogsBtn");
 const modeSelect = document.getElementById("modeSelect");
 const startBtn = document.getElementById("startBtn");
 const safeBtn = document.getElementById("safeBtn");
@@ -59,6 +61,15 @@ function showResult(result) {
 
   const percent = Math.min(result.avg * 20, 100);
   motionBarEl.style.width = percent + "%";
+saveLog({
+  mode: modeLabel,
+  state: result.state,
+  avg: result.avg.toFixed(2),
+  max: result.max.toFixed(2),
+  stability: result.stability,
+  samples: result.samples,
+  time: new Date().toLocaleString()
+});
 }
 
 function showEmergencyAlert() {
@@ -75,6 +86,37 @@ function resetUI() {
   statusEl.innerText = "Collecting sensor data for 5 seconds...";
   alertBoxEl.style.display = "none";
   motionBarEl.style.width = "0%";
+}
+
+function getLogs() {
+  return JSON.parse(localStorage.getItem("motioncore_logs")) || [];
+}
+
+function saveLog(log) {
+  const logs = getLogs();
+  logs.unshift(log);
+  localStorage.setItem("motioncore_logs", JSON.stringify(logs.slice(0, 20)));
+  renderLogs();
+}
+
+function renderLogs() {
+  const logs = getLogs();
+
+  if (logs.length === 0) {
+    eventLogsEl.innerText = "No events recorded yet.";
+    return;
+  }
+
+  eventLogsEl.innerHTML = logs.map((log) => {
+    return `
+      <div class="log-item">
+        <strong>${log.state}</strong><br>
+        Mode: ${log.mode}<br>
+        M: ${log.avg} | P: ${log.max} | Stability: ${log.stability}<br>
+        ${log.time}
+      </div>
+    `;
+  }).join("");
 }
 
 startBtn.addEventListener("click", () => {
@@ -94,3 +136,9 @@ safeBtn.addEventListener("click", () => {
   alertBoxEl.style.display = "none";
   statusEl.innerText = "Emergency alert cancelled by user.";
 });
+clearLogsBtn.addEventListener("click", () => {
+  localStorage.removeItem("motioncore_logs");
+  renderLogs();
+});
+
+renderLogs();

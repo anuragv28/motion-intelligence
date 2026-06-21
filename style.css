@@ -224,3 +224,8 @@ border-radius:10px;
 background:rgba(255,255,255,0.04);
 margin-bottom:8px;
 }
+.log-actions{
+display:flex;
+gap:8px;
+align-items:center;
+}

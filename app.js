@@ -80,6 +80,8 @@ function resetUI() {
 startBtn.addEventListener("click", () => {
   resetUI();
 
+  localStorage.setItem("motioncore_mode", modeSelect.value);
+
   MotionEngine.start(
     updateSample,
     showEmergencyAlert,

@@ -1,3 +1,4 @@
+const modeSelect = document.getElementById("modeSelect");
 const startBtn = document.getElementById("startBtn");
 const safeBtn = document.getElementById("safeBtn");
 
@@ -21,15 +22,37 @@ function updateSample(sample) {
 }
 
 function showResult(result) {
+  const selectedMode = modeSelect.value;
+
+  let modeLabel = "";
+
+  if (selectedMode === "human") {
+    modeLabel = "Human Safety Mode";
+  }
+
+  if (selectedMode === "road") {
+    modeLabel = "Road Intelligence Mode";
+  }
+
+  if (selectedMode === "security") {
+    modeLabel = "Security / Theft Mode";
+  }
+
+  if (selectedMode === "home") {
+    modeLabel = "Smart Home Mode";
+  }
+
+  if (selectedMode === "research") {
+    modeLabel = "Air / Water Research Mode";
+  }
+
   motionStateEl.innerText = result.state;
 
   signatureEl.innerText =
-    "Signature → M:" +
-    result.avg.toFixed(2) +
-    " | P:" +
-    result.max.toFixed(2) +
-    " | V:" +
-    result.stability;
+    "Mode → " + modeLabel +
+    " | M: " + result.avg.toFixed(2) +
+    " | P: " + result.max.toFixed(2) +
+    " | Stability: " + result.stability;
 
   statusEl.innerText =
     "Analyzed " + result.samples + " samples in 5 seconds";

@@ -1,3 +1,8 @@
+const locationStatusEl = document.getElementById("locationStatus");
+let latestLocation = {
+  latitude: null,
+  longitude: null
+};
 const eventLogsEl = document.getElementById("eventLogs");
 const clearLogsBtn = document.getElementById("clearLogsBtn");
 const exportJsonBtn = document.getElementById("exportJsonBtn");
@@ -23,6 +28,33 @@ function updateSample(sample) {
 
   const percent = Math.min(sample.magnitude * 15, 100);
   motionBarEl.style.width = percent + "%";
+}
+
+function captureLocation() {
+  if (!navigator.geolocation) {
+    locationStatusEl.innerText = "Location: Not supported";
+    return;
+  }
+
+  locationStatusEl.innerText = "Location: Capturing...";
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      latestLocation = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      };
+
+      locationStatusEl.innerText =
+        "Location: " +
+        latestLocation.latitude.toFixed(5) +
+        ", " +
+        latestLocation.longitude.toFixed(5);
+    },
+    () => {
+      locationStatusEl.innerText = "Location: Permission denied";
+    }
+  );
 }
 
 function showResult(result) {
@@ -70,7 +102,9 @@ saveLog({
   max: result.max.toFixed(2),
   stability: result.stability,
   samples: result.samples,
-  time: new Date().toLocaleString()
+  time: new Date().toLocaleString(),
+  latitude: latestLocation.latitude,
+longitude: latestLocation.longitude,
 });
 }
 
@@ -180,6 +214,8 @@ function exportCSV() {
 
 startBtn.addEventListener("click", () => {
   resetUI();
+
+  captureLocation();
 
   localStorage.setItem("motioncore_mode", modeSelect.value);
 

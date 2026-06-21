@@ -109,12 +109,49 @@ const MotionEngine = {
 
     const avg = sum / this.values.length;
 
-    /* Original classification rules */
-    let activity = "Idle 😴";
+/* Environment-aware profiles */
 
-    if (avg > 0.5) activity = "Walking 🚶";
-    if (avg > 1.5) activity = "Running 🏃";
-    if (max > 6) activity = "Phone Shake 📳";
+let selectedMode = localStorage.getItem("motioncore_mode") || "human";
+
+let profiles = {
+  human: {
+    low: 0.5,
+    medium: 1.5,
+    high: 6
+  },
+
+  road: {
+    low: 2,
+    medium: 5,
+    high: 10
+  },
+
+  security: {
+    low: 0.8,
+    medium: 2,
+    high: 7
+  },
+
+  home: {
+    low: 0.3,
+    medium: 1,
+    high: 4
+  },
+
+  research: {
+    low: 1,
+    medium: 3,
+    high: 8
+  }
+};
+
+let profile = profiles[selectedMode];
+
+let activity = "Static State";
+
+if (avg > profile.low) activity = "Moderate Motion";
+if (avg > profile.medium) activity = "High Motion State";
+if (max > profile.high) activity = "Impulse Motion Event";
 
     /* Professional display state */
     let state = "Static State";

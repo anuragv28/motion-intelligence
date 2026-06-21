@@ -59,6 +59,30 @@ margin:auto;
 width:100%;
 }
 
+.mode-box{
+margin-bottom:20px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.mode-box label{
+font-size:14px;
+font-weight:600;
+color:#93c5fd;
+}
+
+.mode-box select{
+padding:12px;
+border:none;
+border-radius:10px;
+background:#111827;
+color:white;
+font-size:15px;
+outline:none;
+border:1px solid #334155;
+}
+
 button{
 width:100%;
 padding:14px;

@@ -1,5 +1,5 @@
-import { SensorSource, getCurrentLocation } from '../core/sensor-source.js';
-import { FallDetector, computeMagnitude, computeWindowStats, DEFAULT_CONFIG } from '../core/motion-engine.js';
+import { SensorSource, getCurrentLocation } from './core/sensor-source.js';
+import { FallDetector, computeMagnitude, computeWindowStats, DEFAULT_CONFIG } from './core/motion-engine.js';
 
 // ---- State ----
 const config = { ...DEFAULT_CONFIG };
